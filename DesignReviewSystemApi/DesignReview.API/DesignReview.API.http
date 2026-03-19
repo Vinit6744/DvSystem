@@ -1,0 +1,6 @@
+@DesignReview.API_HostAddress = http://localhost:5033
+
+GET {{DesignReview.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

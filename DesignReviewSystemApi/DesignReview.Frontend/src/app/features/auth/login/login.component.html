@@ -1,0 +1,68 @@
+<div class="login-page">
+  <div class="login-hero">
+    <h1>Design Review System</h1>
+    <p>Upload, verify, and approve design drawings with confidence.</p>
+  </div>
+
+  <div class="login-panel">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <div class="login-title">
+          <mat-icon class="login-icon">verified</mat-icon>
+          <div>
+            <mat-card-title>Welcome back</mat-card-title>
+            <mat-card-subtitle>Sign in to continue</mat-card-subtitle>
+          </div>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Username</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="userName" autocomplete="username">
+            <mat-error *ngIf="loginForm.get('userName')?.hasError('required') && loginForm.get('userName')?.touched">
+              Username is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width password-field" appearance="outline">
+            <mat-label>Password</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              autocomplete="current-password"
+            >
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+              class="password-toggle-btn"
+            >
+              <mat-icon class="password-toggle-icon">{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+              Password is required
+            </mat-error>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width login-button"
+            [disabled]="!isFormValid"
+          >
+            <mat-icon>login</mat-icon>
+            <span *ngIf="!loading">Login</span>
+            <span *ngIf="loading">Logging in...</span>
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

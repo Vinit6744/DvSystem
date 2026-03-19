@@ -1,0 +1,31 @@
+<div class="upload-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Upload Document</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-area">
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf" hidden>
+        <button mat-raised-button (click)="fileInput.click()">
+          <mat-icon>attach_file</mat-icon>
+          Select PDF File
+        </button>
+        <p *ngIf="selectedFile" class="file-name">
+          Selected: {{ selectedFile.name }}
+        </p>
+      </div>
+
+      <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+
+      <div class="actions">
+        <button mat-button (click)="cancel()" [disabled]="uploading">
+          Cancel
+        </button>
+        <button mat-raised-button color="primary" (click)="upload()" [disabled]="!selectedFile || uploading">
+          <mat-icon>upload</mat-icon>
+          Upload
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

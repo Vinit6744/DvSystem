@@ -1,0 +1,38 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+mat-nav-list {
+  padding-top: 0;
+}
+
+mat-nav-list a.active {
+  background-color: rgba(13, 71, 161, 0.08);
+  color: var(--dr-primary);
+}
+
+.content-wrapper {
+  padding: 24px;
+  height: 100%;
+  overflow: auto;
+}

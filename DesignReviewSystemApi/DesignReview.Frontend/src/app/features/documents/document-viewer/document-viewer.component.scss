@@ -1,0 +1,92 @@
+.viewer-container {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.content {
+  margin-top: 24px;
+}
+
+.pdf-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pdf-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: calc(100vh - 300px);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.verification-section {
+  padding: 24px;
+}
+
+.result-item {
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.info-section {
+  padding: 24px;
+}
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: #999;
+}
+
+.issues-section {
+  padding: 24px;
+}
+
+.issue-secondary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.report-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.summary-section {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summary-text {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.summary-meta {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}

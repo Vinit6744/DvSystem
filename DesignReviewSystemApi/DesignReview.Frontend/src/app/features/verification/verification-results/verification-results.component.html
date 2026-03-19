@@ -1,0 +1,51 @@
+<div class="verification-container">
+  <h1>Verification Results</h1>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && verificationResults">
+    <mat-card>
+      <mat-card-content>
+        <table mat-table [dataSource]="verificationResults.results" class="results-table">
+          <ng-container matColumnDef="checkName">
+            <th mat-header-cell *matHeaderCellDef>Check Name</th>
+            <td mat-cell *matCellDef="let result">{{ result.checkName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="outcome">
+            <th mat-header-cell *matHeaderCellDef>Outcome</th>
+            <td mat-cell *matCellDef="let result">
+              <mat-chip [color]="getOutcomeColor(result.outcome)">
+                {{ result.outcome }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foundValue">
+            <th mat-header-cell *matHeaderCellDef>Found Value</th>
+            <td mat-cell *matCellDef="let result">{{ result.foundValue || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="pageNumbers">
+            <th mat-header-cell *matHeaderCellDef>Page Numbers</th>
+            <td mat-cell *matCellDef="let result">{{ result.pageNumbers || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Message</th>
+            <td mat-cell *matCellDef="let result">{{ result.message || '-' }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!loading && !verificationResults" class="empty-state">
+    <p>No verification results found. Run verification on a document first.</p>
+  </div>
+</div>

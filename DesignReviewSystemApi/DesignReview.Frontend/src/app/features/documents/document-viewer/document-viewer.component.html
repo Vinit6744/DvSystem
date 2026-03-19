@@ -1,0 +1,135 @@
+<div class="viewer-container">
+  <div class="header">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ document?.fileName }}</h1>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && document" class="content">
+    <mat-tab-group>
+      <mat-tab label="PDF Viewer">
+        <div class="pdf-section">
+          <div class="pdf-controls">
+            <button mat-icon-button (click)="goToPreviousPage()" [disabled]="!canGoPrevious">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <mat-form-field>
+              <mat-label>Page</mat-label>
+              <mat-select [(ngModel)]="currentPage" (selectionChange)="jumpToPage($event.value)">
+                <mat-option *ngFor="let page of document.pages" [value]="page.pageNumber">
+                  Page {{ page.pageNumber }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-icon-button (click)="goToNextPage()" [disabled]="!canGoNext">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+            <button mat-button (click)="extractText()">
+              <mat-icon>text_fields</mat-icon>
+              Extract Text
+            </button>
+            <button mat-button (click)="runVerification()">
+              <mat-icon>verified</mat-icon>
+              Run Verification
+            </button>
+          </div>
+          <iframe [src]="pdfUrl" class="pdf-viewer"></iframe>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Verification Results">
+        <div class="verification-section" *ngIf="verificationResults">
+          <div *ngFor="let result of verificationResults.results" class="result-item">
+            <h3>{{ result.checkName }}</h3>
+            <p>Status: {{ result.outcome }}</p>
+            <p *ngIf="result.foundValue">Found: {{ result.foundValue }}</p>
+            <p *ngIf="result.pageNumbers">Page: {{ result.pageNumbers }}</p>
+            <p *ngIf="result.message">{{ result.message }}</p>
+          </div>
+        </div>
+        <div *ngIf="!verificationResults" class="empty-state">
+          <p>No verification results. Run verification first.</p>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Issues">
+        <div class="issues-section">
+          <div *ngIf="loadingIssues" class="loading">
+            <mat-spinner></mat-spinner>
+          </div>
+          <div *ngIf="!loadingIssues && issues.length === 0" class="empty-state">
+            <p>No issues detected yet. Run verification to see issues.</p>
+          </div>
+          <mat-nav-list *ngIf="!loadingIssues && issues.length > 0">
+            <a mat-list-item *ngFor="let issue of issues" (click)="onIssueClick(issue)">
+              <div mat-line>{{ issue.checkName }}</div>
+              <div mat-line class="issue-secondary">
+                <span>{{ issue.message }}</span>
+                <span *ngIf="issue.firstPageNumber || issue.pageNumbers">
+                  — Page {{ issue.firstPageNumber || issue.pageNumbers }}
+                </span>
+              </div>
+            </a>
+          </mat-nav-list>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Document Info">
+        <div class="info-section">
+          <p><strong>Uploaded:</strong> {{ document.uploadedAt | date:'short' }}</p>
+          <p><strong>Uploaded By:</strong> {{ document.uploadedBy }}</p>
+          <p><strong>Status:</strong> {{ document.reviewStatus }}</p>
+          <mat-form-field>
+            <mat-label>Change Status</mat-label>
+            <mat-select [(ngModel)]="document.reviewStatus" (selectionChange)="updateStatus($event.value)">
+              <mat-option [value]="'Draft'">Draft</mat-option>
+              <mat-option [value]="'InReview'">In Review</mat-option>
+              <mat-option [value]="'NeedsChanges'">Needs Changes</mat-option>
+              <mat-option [value]="'Approved'">Approved</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="report-actions">
+            <button mat-raised-button color="primary" (click)="exportReport('pdf')" [disabled]="exportingReport">
+              <mat-icon>picture_as_pdf</mat-icon>
+              Download PDF Report
+            </button>
+            <button mat-button (click)="exportReport('html')" [disabled]="exportingReport">
+              <mat-icon>language</mat-icon>
+              Download HTML Report
+            </button>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="AI Summary">
+        <div class="summary-section">
+          <button mat-raised-button color="primary" (click)="generateSummary()" [disabled]="generatingSummary">
+            <mat-icon>auto_awesome</mat-icon>
+            <span *ngIf="!generatingSummary">Generate Review Summary</span>
+            <span *ngIf="generatingSummary">Generating...</span>
+          </button>
+
+          <div *ngIf="loadingSummary" class="loading">
+            <mat-spinner></mat-spinner>
+          </div>
+
+          <div *ngIf="!loadingSummary && summary" class="summary-text">
+            <h3>AI Review Summary</h3>
+            <p style="white-space: pre-line;">{{ summary.summaryText }}</p>
+            <p class="summary-meta">Generated at: {{ summary.generatedAt | date:'short' }}</p>
+          </div>
+
+          <div *ngIf="!loadingSummary && !summary" class="empty-state">
+            <p>No summary yet. Click “Generate Review Summary” to create one.</p>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

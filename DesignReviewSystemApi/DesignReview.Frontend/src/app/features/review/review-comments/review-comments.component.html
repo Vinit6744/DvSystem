@@ -1,0 +1,34 @@
+<div class="review-container">
+  <h1>Review Comments</h1>
+
+  <mat-card class="add-comment-card">
+    <mat-card-content>
+      <form [formGroup]="commentForm" (ngSubmit)="addComment()">
+        <mat-form-field class="full-width">
+          <mat-label>Add Comment</mat-label>
+          <textarea matInput formControlName="text" rows="4" required></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="commentForm.invalid">
+          <mat-icon>add</mat-icon>
+          Add Comment
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="comments-list">
+    <mat-card *ngFor="let comment of comments" class="comment-card">
+      <mat-card-content>
+        <p>{{ comment.text }}</p>
+        <div class="comment-meta">
+          <span>By: {{ comment.createdByName || comment.createdBy }}</span>
+          <span>{{ comment.createdAt | date:'short' }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="comments.length === 0" class="empty-state">
+    <p>No comments yet. Add your first comment above.</p>
+  </div>
+</div>

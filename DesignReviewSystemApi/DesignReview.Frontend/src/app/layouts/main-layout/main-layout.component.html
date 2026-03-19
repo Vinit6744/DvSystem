@@ -1,0 +1,53 @@
+<div class="layout-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenavOpened = !sidenavOpened">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Design Review System</span>
+    <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ currentUser?.userName }}
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" [opened]="sidenavOpened">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/documents" routerLinkActive="active">
+          <mat-icon>folder</mat-icon>
+          <span>Documents</span>
+        </a>
+        <a mat-list-item routerLink="/verification" routerLinkActive="active">
+          <mat-icon>verified</mat-icon>
+          <span>Verification</span>
+        </a>
+        <a mat-list-item routerLink="/review" routerLinkActive="active">
+          <mat-icon>rate_review</mat-icon>
+          <span>Review</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="/documents/upload" routerLinkActive="active" *ngIf="isAdmin()">
+          <mat-icon>upload</mat-icon>
+          <span>Upload Document</span>
+        </a>
+        <a mat-list-item routerLink="/auth/register" routerLinkActive="active" *ngIf="isAdmin()">
+          <mat-icon>person_add</mat-icon>
+          <span>Register User</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

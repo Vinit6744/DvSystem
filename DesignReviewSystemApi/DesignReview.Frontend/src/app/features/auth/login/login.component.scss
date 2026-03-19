@@ -1,0 +1,119 @@
+.login-page {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #5c6bc0, #283593 40%, #1a237e 100%);
+  color: #fff;
+}
+
+.login-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 64px;
+  color: #e8eaf6;
+}
+
+.login-hero h1 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.login-hero p {
+  font-size: 1.1rem;
+  max-width: 460px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.login-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 16px 24px 24px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+}
+
+.login-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.login-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #3f51b5;
+}
+
+mat-card-header {
+  padding: 8px 0 0;
+}
+
+mat-card-title {
+  font-size: 1.4rem;
+}
+
+mat-card-subtitle {
+  font-size: 0.9rem;
+}
+
+mat-form-field {
+  margin-bottom: 16px;
+}
+
+.login-button {
+  margin-top: 8px;
+  height: 48px;
+}
+
+.password-field .password-toggle-btn {
+  color: #666;
+}
+
+.password-field .password-toggle-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.hint-text {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: #666;
+  display: flex;
+  justify-content: center;
+}
+
+.hint-text code {
+  background: #f5f5f5;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .login-hero {
+    display: none;
+  }
+
+  .login-panel {
+    padding: 24px 16px;
+  }
+}
