@@ -1,6 +1,15 @@
 <div class="verification-container">
   <h1>Verification Results</h1>
 
+  <mat-form-field appearance="outline" style="width: 300px;">
+    <mat-label>Select Document</mat-label>
+      <mat-select [(value)]="selectedDocumentId" (selectionChange)="onDocumentChange($event.value)">
+        <mat-option *ngFor="let doc of documents" [value]="doc.id">
+          {{ doc.fileName }}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <div *ngIf="loading" class="loading">
     <mat-spinner></mat-spinner>
   </div>

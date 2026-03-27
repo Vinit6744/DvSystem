@@ -1,5 +1,18 @@
 <div class="review-container">
   <h1>Review Comments</h1>
+   <!-- <mat-form-field class="full-width">
+    <mat-label>Select Document</mat-label>
+    <mat-select [(value)]="selectedDocumentId" (selectionChange)="onDocumentChange()">
+      <mat-option *ngFor="let doc of documents" [value]="doc.id">
+        {{ doc.originalName || doc.name || doc.id }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="!selectedDocumentId" class="empty-state">
+    <mat-icon>rate_review</mat-icon>
+    <p>Select a document above to view and add comments.</p>
+  </div> -->
 
   <mat-card class="add-comment-card">
     <mat-card-content>

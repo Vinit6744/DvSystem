@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const verificationRoutes: Routes = [
   {
-    path: '',
+    path: ':documentId',
     loadComponent: () => import('./verification-results/verification-results.component').then(m => m.VerificationResultsComponent)
   }
 ];

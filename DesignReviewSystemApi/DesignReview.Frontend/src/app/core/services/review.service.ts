@@ -13,22 +13,37 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   getComments(documentId: string): Observable<ReviewComment[]> {
+    if (!documentId?.trim()) {
+      throw new Error('Document ID is required');
+    }
     return this.http.get<ReviewComment[]>(`${this.apiUrl}/documents/${documentId}/comments`);
   }
 
   getComment(documentId: string, commentId: string): Observable<ReviewComment> {
+    if (!documentId?.trim() || !commentId?.trim()) {
+      throw new Error('Document ID and Comment ID are required');
+    }
     return this.http.get<ReviewComment>(`${this.apiUrl}/documents/${documentId}/comments/${commentId}`);
   }
 
   addComment(documentId: string, comment: AddReviewComment): Observable<ReviewComment> {
+    if (!documentId?.trim()) {
+      throw new Error('Document ID is required');
+    }
     return this.http.post<ReviewComment>(`${this.apiUrl}/documents/${documentId}/comments`, comment);
   }
 
   updateComment(documentId: string, commentId: string, comment: UpdateReviewComment): Observable<ReviewComment> {
+    if (!documentId?.trim() || !commentId?.trim()) {
+      throw new Error('Document ID and Comment ID are required');
+    }
     return this.http.put<ReviewComment>(`${this.apiUrl}/documents/${documentId}/comments/${commentId}`, comment);
   }
 
   deleteComment(documentId: string, commentId: string): Observable<void> {
+    if (!documentId?.trim() || !commentId?.trim()) {
+      throw new Error('Document ID and Comment ID are required');
+    }
     return this.http.delete<void>(`${this.apiUrl}/documents/${documentId}/comments/${commentId}`);
   }
 
