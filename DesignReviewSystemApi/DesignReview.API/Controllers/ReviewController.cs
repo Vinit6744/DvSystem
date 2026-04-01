@@ -150,8 +150,6 @@ namespace DesignReview.API.Controllers
         public async Task<ActionResult<ReviewSummaryDto>> GetSummary(Guid documentId, CancellationToken cancellationToken)
         {
             var summary = await _summaryService.GetSummaryAsync(documentId, cancellationToken);
-            if (summary == null)
-                return NotFound(new { message = "No summary. Generate first (POST .../summary/generate)." });
             return Ok(summary);
         }
     }

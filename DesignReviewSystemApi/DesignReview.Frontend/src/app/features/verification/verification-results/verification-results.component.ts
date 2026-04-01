@@ -9,7 +9,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { VerificationService } from '../../../core/services/verification.service';
 import { DocumentService } from '../../../core/services/document.service';
 
@@ -29,7 +31,9 @@ import { DocumentMetadata } from '../../../core/models/document.model';
     MatChipsModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   templateUrl: './verification-results.component.html',
   styleUrl: './verification-results.component.scss'
@@ -38,6 +42,7 @@ export class VerificationResultsComponent implements OnInit {
 
   displayedColumns: string[] = ['checkName', 'outcome', 'foundValue', 'pageNumbers', 'message'];
 
+  dataSource = new MatTableDataSource<any>();
   verificationResults: VerificationRunResponse | null = null;
   documents: DocumentMetadata[] = [];
 
@@ -55,22 +60,27 @@ export class VerificationResultsComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadDocuments();
+    this.route.params.subscribe(params => {
+      this.documentId = params['documentId'] || '';
+      this.selectedDocumentId = this.documentId;
 
-    // this.route.params.subscribe(params => {
-    //   this.documentId = params['documentId'];
-
-    //   if (this.documentId) {
-    //     this.selectedDocumentId = this.documentId;
-    //     this.loadResults();
-    //   }
-    // });
+      if (this.documentId) {
+        this.loadResults();
+      } else {
+        // No ID in URL — just show dropdown, clear any previous results
+        this.verificationResults = null;
+        this.loading = false;
+      }
+    });
   }
 
-  loadDocuments(): void {
+ loadDocuments(): void {
     this.documentService.getList().subscribe({
       next: (docs: DocumentMetadata[]) => {
         this.documents = docs;
-        console.log('Documents loaded:', this.documents);
+        if (!this.documentId && docs.length > 0) {
+          this.router.navigate(['/verification', docs[0].id], { replaceUrl: true });
+        }
       }
     });
   }

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';  // ← add Router
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';  // ← add
 import { ReviewService } from '../../../core/services/review.service';
+import { DocumentService } from '../../../core/services/document.service';  // ← add
 import { ReviewComment, AddReviewComment } from '../../../core/models/review.model';
+import { DocumentMetadata } from '../../../core/models/document.model';  // ← add
 
 @Component({
   selector: 'app-review-comments',
@@ -22,19 +25,24 @@ import { ReviewComment, AddReviewComment } from '../../../core/models/review.mod
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatSelectModule 
   ],
   templateUrl: './review-comments.component.html',
   styleUrl: './review-comments.component.scss'
 })
 export class ReviewCommentsComponent implements OnInit {
   documentId: string = '';
+  selectedDocumentId: string = '';  
+  documents: DocumentMetadata[] = [];
   comments: ReviewComment[] = [];
   commentForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router, 
     private reviewService: ReviewService,
+    private documentService: DocumentService, 
     private fb: FormBuilder
   ) {
     this.commentForm = this.fb.group({
@@ -43,9 +51,35 @@ export class ReviewCommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.documentId = this.route.snapshot.params['documentId'] || '';
-    if (this.documentId) {
-      this.loadComments();
+    this.loadDocuments();
+
+    this.route.params.subscribe(params => {
+      this.documentId = params['documentId'] || '';
+      this.selectedDocumentId = this.documentId;
+
+      if (this.documentId) {
+        this.loadComments();
+      } else {
+        // No ID in URL — show dropdown, clear previous comments
+        this.comments = [];
+      }
+    });
+  }
+
+  loadDocuments(): void {
+    this.documentService.getList().subscribe({
+      next: (docs: DocumentMetadata[]) => {
+        this.documents = docs;
+        if (!this.documentId && docs.length > 0) {
+          this.router.navigate(['/review', docs[0].id], { replaceUrl: true });
+        }
+      }
+    });
+  }
+
+  onDocumentChange(documentId: string): void {
+    if (documentId) {
+      this.router.navigate(['/review', documentId]);
     }
   }
 

@@ -63,8 +63,6 @@ namespace DesignReview.API.Controllers
         public async Task<ActionResult<VerificationRunResponseDto>> GetResults(Guid documentId, CancellationToken cancellationToken)
         {
             var result = await _verificationService.GetVerificationResultsAsync(documentId, cancellationToken);
-            if (result == null)
-                return NotFound(new { message = "No verification results. Run verification first." });
             return Ok(result);
         }
 
